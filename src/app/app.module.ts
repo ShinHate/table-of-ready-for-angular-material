@@ -9,6 +9,11 @@ import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import { ImageComponent } from './component/image/image.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import { SelectImagesComponent } from './component/select-images/select-images.component';
+import {ɵEmptyOutletComponent} from "@angular/router";
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -26,18 +31,22 @@ function initializeKeycloak(keycloak: KeycloakService) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    NgxPaginationModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    KeycloakAngularModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatInputModule,
-  ],
+  declarations: [AppComponent, ImageComponent, SelectImagesComponent],
+    imports: [
+        BrowserModule,
+        NgxPaginationModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        KeycloakAngularModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        FormsModule,
+        ɵEmptyOutletComponent,
+    ],
   providers: [
     {
       provide: APP_INITIALIZER,

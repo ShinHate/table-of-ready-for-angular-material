@@ -11,7 +11,7 @@ export interface IImages {
         code: string
         meta: string
         name: string
-        published: boolean
+        published?: boolean
       }
     ]
   }
@@ -25,5 +25,7 @@ export interface IImages {
     L: {
       src: string
     }
-  }
+  },
+  uploadTime: string
+  published: boolean
 }

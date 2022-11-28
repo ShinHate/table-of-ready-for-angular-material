@@ -1,8 +1,11 @@
-import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {GetService} from "./service/get.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {IImages} from "./models/images";
-import { MatPaginator } from '@angular/material/paginator';
+import {MatPaginator} from '@angular/material/paginator';
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {PostService} from "./service/post.service";
+import {DeleteService} from "./service/delete.service";
 
 @Component({
   selector: 'app-root',
@@ -18,12 +21,27 @@ export class AppComponent implements OnInit {
 
   page: number = 1;
   count: number = 0;
-  tableSize: number = 3;
-  tableSizes: any = [3, 6, 9, 12];
+  tableSize: number = 4;
+  tableSizes: any = [4, 8, 12, 16];
 
-  constructor(public getService: GetService) {}
+  form: FormGroup;
+  files: any;
 
-  @ViewChild(MatPaginator) paginator:any = MatPaginator;
+  // checked
+  allComplete: boolean = false;
+
+  constructor(
+    public getService: GetService,
+    public formBuilder: FormBuilder,
+    public postService: PostService,
+    public deleteService: DeleteService
+  ) {
+    this.form = new FormGroup({
+      image: new FormControl(),
+    })
+  }
+
+  @ViewChild(MatPaginator) paginator: any = MatPaginator;
 
   ngOnInit(): void {
     this.getService.getAllImage().subscribe(() => {
@@ -31,6 +49,25 @@ export class AppComponent implements OnInit {
     }, (error) => {
       console.log(error)
     });
+  }
+
+
+  someComplete(): boolean {
+    if (this.getService.images == null) {
+      return false;
+    }
+    return this.getService.images.filter(t => t.published).length > 0 && !this.allComplete;
+  }
+
+  setAll(completed: boolean) {
+    if (!this.getService.images.length){
+      return;
+    }
+    this.allComplete = completed;
+    if (this.getService.images == null) {
+      return;
+    }
+    this.getService.images.forEach(t => (t.published = completed));
   }
 
   onTableDataChange(event: any) {
@@ -56,4 +93,17 @@ export class AppComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  uploadFile(event: any) {
+    this.files = (event.target as HTMLInputElement).files
+    this.form.patchValue({
+      image: this.files
+    });
+  }
+
+  submitForm(event: any) {
+    for (let i = 0; i < this.form.get('image')?.value.length; i++) {
+      this.postService.createImage(this.form.get('image')?.value[i])
+    }
+    event.srcElement[0].value = ''
+  }
 }
