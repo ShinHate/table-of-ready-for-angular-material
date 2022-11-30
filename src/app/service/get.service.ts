@@ -26,6 +26,7 @@ export class GetService {
     }).pipe(
       retry(2),
       tap((images) => {
+        console.log(images)
         this.images = Object.values(images)[0]
         console.log(this.images)
       })

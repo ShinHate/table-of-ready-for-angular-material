@@ -34,7 +34,6 @@ export class DeleteService {
       })
       if (indexOfObject !== -1) {
         this.http.delete('https://ps.dev.riple.tech/v1/images/' + (selectImageArray[i].id), {
-          // responseType: ,
           headers: new HttpHeaders({
             'X-Realm': 'print-a-porter',
             Authorization: 'Barier ' + this.getService.getKeylockToken()
@@ -50,7 +49,6 @@ export class DeleteService {
         })
       }
       this.getService.images.splice(indexOfObject, 1)
-
     }
   }
 }

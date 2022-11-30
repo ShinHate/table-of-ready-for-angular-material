@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {IImages} from "../models/images";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable, tap} from "rxjs";
+import {tap} from "rxjs";
 import {GetService} from "./get.service";
 
 
@@ -13,9 +13,7 @@ export class PostService {
 
   endpoint: string = 'https://ps.dev.riple.tech/v1/images/';
 
-  constructor(private http: HttpClient, public getService: GetService) {
-
-  }
+  constructor(private http: HttpClient, public getService: GetService) {}
 
   createImage(images: IImages){
       var formData: any = new FormData();
